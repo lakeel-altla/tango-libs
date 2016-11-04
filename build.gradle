@@ -1,0 +1,44 @@
+apply plugin: 'maven'
+
+//
+// The task to upload this aar into the specified local directory.
+//
+def uploadRepo = '/tmp/maven-repository'
+
+Properties localProperties = new Properties()
+localProperties.load(project.rootProject.file('maven-repository.properties').newDataInputStream())
+
+if (localProperties.getProperty("upload.repo")) {
+    uploadRepo = localProperties.getProperty("upload.repo")
+}
+
+artifacts {
+    archives file: file('tango_java_lib.jar'), type: 'jar', name: 'tango'
+    archives file: file('tango_support_java_lib.aar'), type: 'aar', name: 'tango-support'
+    archives file: file('tango-ux-support-library.aar'), type: 'aar', name: 'tango-ux'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository url: "file://${uploadRepo}"
+
+            addFilter('tango') {artifact, file ->
+                artifact.name == 'tango'
+            }
+            addFilter('tango-support') {artifact, file ->
+                artifact.name == 'tango-support'
+            }
+            addFilter('tango-ux') {artifact, file ->
+                artifact.name == 'tango-ux'
+            }
+
+            pom('tango').version = '1.45'
+            pom('tango').groupId = 'com.google.atap'
+            pom('tango-support').version = '1.45'
+            pom('tango-support').groupId = 'com.projecttango'
+            pom('tango-ux').version = '1.45'
+            pom('tango-ux').groupId = 'com.google.atap'
+        }
+    }
+}
