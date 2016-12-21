@@ -33,11 +33,11 @@ uploadArchives {
                 artifact.name == 'tango-ux'
             }
 
-            pom('tango').version = '1.47'
+            pom('tango').version = '1.48'
             pom('tango').groupId = 'com.google.atap'
-            pom('tango-support').version = '1.47'
+            pom('tango-support').version = '1.48'
             pom('tango-support').groupId = 'com.projecttango'
-            pom('tango-ux').version = '1.47'
+            pom('tango-ux').version = '1.48'
             pom('tango-ux').groupId = 'com.google.atap'
         }
     }
